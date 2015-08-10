@@ -113,6 +113,12 @@
     <Compile Include="Services\NavigationService\NavigationService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\TodoItemViewModel.cs" />
+    <Compile Include="Views\InkNotesControl.xaml.cs">
+      <DependentUpon>InkNotesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InkPage.xaml.cs">
+      <DependentUpon>InkPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ListToDoItemUserControl.xaml.cs">
       <DependentUpon>ListToDoItemUserControl.xaml</DependentUpon>
     </Compile>
@@ -162,6 +168,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\InkNotesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InkPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ListToDoItemUserControl.xaml">
       <SubType>Designer</SubType>

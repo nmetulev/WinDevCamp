@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:TODOAdaptiveUISample.ViewModels"
     mc:Ignorable="d"
-    d:DesignHeight="550"
+    d:DesignHeight="750"
     d:DesignWidth="400"
     d:DataContext="vm:TodoItemViewModel">
 
@@ -40,6 +40,13 @@
                     <AppBarButton x:Name="TakePictureButton" Icon="Camera" Label="photo" Command="{Binding TakePictureCommand}"/>
                     <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" Command="{Binding SelectPictureCommand}"/>
                 </CommandBar>
+
+                <Border Width="300">
+                    <TextBlock Text="Notes" ></TextBlock>
+                </Border>
+                <Button Background="White" Width="300" Height="180" HorizontalAlignment="Center" Command="{Binding EditInkNotesCommand}">
+                    <Image Source="{Binding TodoItem.InkUri}" Width="300" Height="180" Stretch="UniformToFill"></Image>
+                </Button>
 
                 <!-- item details -->
                 <TextBox Width="300" Height="96" Margin="0,12,0,0" Header="Details" 

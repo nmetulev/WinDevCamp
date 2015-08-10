@@ -1,0 +1,155 @@
+﻿<UserControl
+    x:Class="TODOAdaptiveUISample.Views.InkNotesControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TODOAdaptiveUISample.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="ColorButtonStyle"  TargetType="Button">
+                <Setter Property="MinWidth" Value="28"/>
+                <Setter Property="MinHeight" Value="28"/>
+                <Setter Property="Width" Value="28"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="Margin" Value="0,0,0,0"/>
+                <Setter Property="FontSize" Value="0"/>
+                <Setter Property="Padding" Value="0,0,0,0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Background="Transparent">
+                                <Grid Background="Transparent">
+                                    <Border x:Name="ColorButtonOuterBorder"
+                                        BorderThickness="1"
+                                        BorderBrush="Orange"
+                                        Background="Transparent">
+                                        <Border
+                                            BorderBrush="LightGray"
+                                            BorderThickness="1"
+                                            Background="{TemplateBinding Background}"/>
+                                    </Border>
+                                </Grid>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ColorButtonOuterBorder" Storyboard.TargetProperty="BorderThickness">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="2"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed"/>
+                                        <VisualState x:Name="Disabled"/>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="FocusStates">
+                                        <VisualState x:Name="Focused">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ColorButtonOuterBorder" Storyboard.TargetProperty="BorderThickness">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="2"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Unfocused"/>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <SplitView x:Name="splitView" PanePlacement="Right" DisplayMode="Overlay" IsPaneOpen="false" PaneBackground="#66FFFFFF">
+            <SplitView.Pane>
+                <Grid>
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Right" Content="Close" Click="CloseOptions"></Button>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="Pen Type:"
+                            Grid.Row="0" Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Margin="0,10"/>
+                        <ComboBox
+                            x:Name="PenType"
+                            Grid.Row="0" Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Width="132" Height="Auto"
+                            SelectedIndex="0"
+                            SelectionChanged="OnPenTypeChanged">
+                            <ComboBoxItem Content="Ballpoint"/>
+                            <ComboBoxItem Content="Highlighter"/>
+                            <ComboBoxItem Content="Calligraphy"/>
+                        </ComboBox>
+
+                        <TextBlock
+                            Text="Pen Thickness:"
+                            Grid.Row="1" Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Margin="0,10"/>
+                        <ComboBox
+                            x:Name="PenThickness"
+                            Grid.Row="1" Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Width="132" Height="Auto"
+                            SelectedIndex="1"
+                            SelectionChanged="OnPenThicknessChanged">
+                            <ComboBoxItem Content="Smallest"/>
+                            <ComboBoxItem Content="Small"/>
+                            <ComboBoxItem Content="Medium"/>
+                            <ComboBoxItem Content="Large"/>
+                            <ComboBoxItem Content="Largest"/>
+                        </ComboBox>
+
+                        <TextBlock
+                            Text="Color:"
+                            Grid.Row="2" Grid.Column="0"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Margin="0,5"/>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                            <Button Background="Red"    Foreground="Red"    Click="OnPenColorChanged" Style="{StaticResource ColorButtonStyle}" Margin="0,0,3,0"/>
+                            <Button Background="Green"  Foreground="Green"  Click="OnPenColorChanged" Style="{StaticResource ColorButtonStyle}" Margin="0,0,3,0"/>
+                            <Button Background="Blue"   Foreground="Blue"   Click="OnPenColorChanged" Style="{StaticResource ColorButtonStyle}" Margin="0,0,3,0"/>
+                            <Button Background="Yellow" Foreground="Yellow" Click="OnPenColorChanged" Style="{StaticResource ColorButtonStyle}" Margin="0,0,3,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Button panel -->
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Button Content="Clear" Width="65" Margin="0,0,3,0" Click="OnClear"/>
+                        <!--<CheckBox Content="Enable Touch Inking" Margin="10,0,3,0" Checked="TouchInkingCheckBox_Checked" Unchecked="TouchInkingCheckBox_Unchecked"/>-->
+                        <CheckBox Content="Erase" Margin="10,0,3,0" Checked="ErasingModeCheckBox_Checked" Unchecked="ErasingModeCheckBox_Unchecked"/>
+                    </StackPanel>
+                </Grid>
+            </SplitView.Pane>
+            <Grid>
+                <ScrollViewer ZoomMode="Enabled" MinZoomFactor="1" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+                    <Grid x:Name="outputGrid" Background="{ThemeResource SystemControlBackgroundChromeWhiteBrush}">
+                        <!-- Inking area -->
+                        <InkCanvas x:Name="inkCanvas"/>
+                    </Grid>
+                </ScrollViewer>
+
+                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Content="Open" Click="OpenOptions"></Button>
+            </Grid>
+           
+
+        </SplitView>
+        
+    </Grid>
+</UserControl>

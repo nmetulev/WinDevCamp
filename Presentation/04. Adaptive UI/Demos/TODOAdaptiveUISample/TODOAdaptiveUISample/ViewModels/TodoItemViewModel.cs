@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TODOAdaptiveUISample.Models;
+using TODOAdaptiveUISample.Views;
 using Windows.Foundation;
 using Windows.Media.Capture;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace TODOAdaptiveUISample.ViewModels
@@ -155,6 +157,17 @@ namespace TODOAdaptiveUISample.ViewModels
             await _todoItemRepository.UpdateTodoItem(this.TodoItem);
         }
 
-        #endregion  
+        Mvvm.Command<Models.TodoItem> _EditInkNotesCommand = default(Mvvm.Command<Models.TodoItem>);
+        public Mvvm.Command<Models.TodoItem> EditInkNotesCommand { get { return _EditInkNotesCommand ?? (_EditInkNotesCommand = new Mvvm.Command<Models.TodoItem>(ExecuteEditInkNotesCommand, CanExecuteEditInkNotesCommand)); } }
+        private bool CanExecuteEditInkNotesCommand(Models.TodoItem param) { return !Busy; }
+        private async void ExecuteEditInkNotesCommand(Models.TodoItem param)
+        {
+            ((App)(Application.Current)).NavigationService.Navigate(typeof(InkPage), this.TodoItem.Id);
+        }
+
+
+
+
+        #endregion
     }
 }
