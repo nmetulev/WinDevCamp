@@ -158,6 +158,9 @@
     <Content Include="Images\Placeholder3.png" />
     <Content Include="Images\Placeholder4.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <Content Include="vcd.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -209,6 +212,12 @@
     <SDKReference Include="WindowsMobile, Version=10.0.10240.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoVoiceService\ToDoVoiceService.csproj">
+      <Project>{c83521f2-84c3-4898-a93f-8f54aa691a2f}</Project>
+      <Name>ToDoVoiceService</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

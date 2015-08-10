@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml.Controls;
 using Windows.ApplicationModel.Activation;
+using System.Diagnostics;
 
 namespace TODOAdaptiveUISample.Common
 {
@@ -103,6 +104,24 @@ namespace TODOAdaptiveUISample.Common
             }
             Window.Current.Activate();
 
+            // Install VCD
+            try
+            {
+                var storageFile =
+                await Windows.Storage.StorageFile
+                .GetFileFromApplicationUriAsync(new Uri("ms-appx:///vcd.xml"));
+
+                await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager
+                    .InstallCommandDefinitionsFromStorageFileAsync(storageFile);
+            }
+            catch
+            {
+                if (Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
+            }
+
             // Hook up the default Back handler
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
         }
@@ -135,7 +154,47 @@ namespace TODOAdaptiveUISample.Common
         #region overrides
 
         public virtual Task OnInitializeAsync() { return Task.FromResult<object>(null); }
-        public virtual Task OnActivatedAsync(IActivatedEventArgs e) { return Task.FromResult<object>(null); }
+        public virtual async Task OnActivatedAsync(IActivatedEventArgs e) {
+            // TODO: make this better, fix it
+
+            UIElement splashScreen = default(UIElement);
+            if (this.SplashFactory != null)
+            {
+                splashScreen = this.SplashFactory(e.SplashScreen);
+                Window.Current.Content = splashScreen;
+            }
+
+            this.RootFrame = this.RootFrame ?? new Frame();
+            this.RootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+            this.NavigationService = new Services.NavigationService.NavigationService(this.RootFrame);
+
+            // the user may override to set custom content
+            await OnInitializeAsync();
+
+            if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+            {
+                try { /* TODOAdaptiveUISample: restore state */ }
+                finally { await this.OnLaunchedAsync(null); }
+            }
+            else
+            {
+                await this.OnLaunchedAsync(null);
+            }
+
+            // if the user didn't already set custom content use rootframe
+            if (Window.Current.Content == splashScreen)
+            {
+                Window.Current.Content = this.RootFrame;
+            }
+            if (Window.Current.Content == null)
+            {
+                Window.Current.Content = this.RootFrame;
+            }
+            Window.Current.Activate();
+
+            // Hook up the default Back handler
+            Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+        }
         public abstract Task OnLaunchedAsync(ILaunchActivatedEventArgs e);
         protected virtual void OnResuming(object s, object e) { }
         protected virtual Task OnSuspendingAsync(object s, SuspendingEventArgs e) { return Task.FromResult<object>(null); }
