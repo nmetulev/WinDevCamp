@@ -98,19 +98,22 @@ namespace TODOAdaptiveUISample.Views
         {
             Uri uri = null;
 
-            try
+            if (inkCanvas.InkPresenter.StrokeContainer.GetStrokes().Count > 0)
             {
-                using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                try
                 {
-                    await inkCanvas.InkPresenter.StrokeContainer.SaveAsync(stream);
-                    uri = new Uri("ms-appdata:///local/" + file.Name);
+                    using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                    {
+                        await inkCanvas.InkPresenter.StrokeContainer.SaveAsync(stream);
+                        uri = new Uri("ms-appdata:///local/" + file.Name);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                if (Debugger.IsAttached)
+                catch (Exception ex)
                 {
-                    Debugger.Break();
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
+                    }
                 }
             }
 

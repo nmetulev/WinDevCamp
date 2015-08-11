@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TODOAdaptiveUISample.Mvvm;
+using Windows.Storage;
 using Windows.UI.Xaml.Navigation;
 
 namespace TODOAdaptiveUISample.ViewModels
@@ -100,6 +101,27 @@ namespace TODOAdaptiveUISample.ViewModels
                 this.SelectedItem = itemVM;
             }
             catch { this.SelectedItem = null; }
+        }
+
+        Mvvm.Command<StorageFile> _AddItemFromImageCommand = default(Mvvm.Command<StorageFile>);
+        public Mvvm.Command<StorageFile> AddItemFromImageCommand { get { return _AddItemFromImageCommand ?? (_AddItemFromImageCommand = new Mvvm.Command<StorageFile>(ExecuteAddItemFromImageCommand, CanExecuteAddItemFromImageCommand)); } }
+        private bool CanExecuteAddItemFromImageCommand(StorageFile file) { return !Busy; }
+        private async void ExecuteAddItemFromImageCommand(StorageFile file)
+        {
+            Busy = true;
+            try
+            {
+                var item = _todoItemRepository.Factory(title: "New Item From Image");
+                await _todoItemRepository.InsertTodoItem(item);
+
+                var itemVM = new ViewModels.TodoItemViewModel(item);
+                var index = this.ItemVMs.IndexOf(this.SelectedItem);
+                this.ItemVMs.Insert((index > -1) ? index : 0, itemVM);
+                await itemVM.SaveImage(file);
+                this.SelectedItem = itemVM;
+            }
+            catch { this.SelectedItem = null; }
+            Busy = false;
         }
 
         Mvvm.Command<Models.TodoItem> _RemoveItemCommand = default(Mvvm.Command<Models.TodoItem>);

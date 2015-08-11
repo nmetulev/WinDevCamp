@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using TODOAdaptiveUISample.ViewModels;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -101,6 +104,39 @@ namespace TODOAdaptiveUISample.Views
             {
                 CreateNewToDoItem(NewToDoItemNameTextBox);
             }
+        }
+
+        private void Grid_DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Link;
+            DropBackgrund.Visibility = Visibility.Visible;
+        }
+
+        private async void Grid_Drop(object sender, DragEventArgs e)
+        {
+            DropBackgrund.Visibility = Visibility.Collapsed;
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var items = await e.DataView.GetStorageItemsAsync();
+
+                if (items.Any())
+                {
+                    var storageFile = items[0] as StorageFile;
+
+                    if (storageFile.ContentType.Contains("image"))
+                    {
+                        var vm = ((Grid)sender).DataContext as ViewModels.MainPageViewModel;
+                        vm.AddItemFromImageCommand.Execute(storageFile);
+                        
+                    }
+                }
+            }
+        }
+
+        private void Grid_DragLeave(object sender, DragEventArgs e)
+        {
+            DropBackgrund.Visibility = Visibility.Collapsed;
+
         }
     }
 }

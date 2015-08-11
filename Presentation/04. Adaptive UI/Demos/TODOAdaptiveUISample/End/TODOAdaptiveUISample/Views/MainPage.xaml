@@ -15,7 +15,7 @@
         <vm:MainPageViewModel />
     </Page.DataContext>
 
-    <Grid>
+    <Grid >
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="VisualStateMin0">
@@ -66,43 +66,51 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListView x:Name="ToDoListView" Padding="0,0,0,12" MaxWidth="980"
+            <Grid AllowDrop="True" DragOver="Grid_DragOver" Drop="Grid_Drop" DragLeave="Grid_DragLeave" VerticalAlignment="Stretch" Background="Transparent">
+                <ListView x:Name="ToDoListView" Padding="0,0,0,12" MaxWidth="980"
                                 IsItemClickEnabled="True" ItemClick="TodoItem_ItemClicked"
                                 ItemsSource="{Binding ItemVMs}" VerticalAlignment="Top" 
                                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                       SelectionChanged="TodoItem_SelectionChanged">
-                <ListView.ItemContainerTransitions>
-                    <TransitionCollection>
-                        <AddDeleteThemeTransition />
-                    </TransitionCollection>
-                </ListView.ItemContainerTransitions>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Padding" Value="24,0,0,0" />
-                        <Setter Property="Margin" Value="0,0,0,0" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.Header>
-                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0" >
-                        <!-- create new item -->
-                        <TextBox KeyDown="TextBox_KeyDown" Width="240" PlaceholderText="Add a new task" 
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <AddDeleteThemeTransition />
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Padding" Value="24,0,0,0" />
+                            <Setter Property="Margin" Value="0,0,0,0" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.Header>
+                        <StackPanel Orientation="Horizontal" Margin="0,12,0,0" >
+                            <!-- create new item -->
+                            <TextBox KeyDown="TextBox_KeyDown" Width="240" PlaceholderText="Add a new task" 
                                             Margin="24,0,0,12" Height="36" />
-                        <AppBarButton Icon="Accept" Loaded="AddNewItemConfirmButton_Loaded"
+                            <AppBarButton Icon="Accept" Loaded="AddNewItemConfirmButton_Loaded"
                                                 IsEnabled="False" Click="AddNewItemConfirmButton_Click" 
                                                 RenderTransformOrigin="0.5,0.5" Margin="0,-8,0,0">
-                            <AppBarButton.RenderTransform>
-                                <CompositeTransform ScaleX="0.75" ScaleY="0.75"/>
-                            </AppBarButton.RenderTransform>
-                        </AppBarButton>
-                    </StackPanel>
-                </ListView.Header>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <views:ListToDoItemUserControl/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                <AppBarButton.RenderTransform>
+                                    <CompositeTransform ScaleX="0.75" ScaleY="0.75"/>
+                                </AppBarButton.RenderTransform>
+                            </AppBarButton>
+                        </StackPanel>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <views:ListToDoItemUserControl/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Border x:Name="DropBackgrund" Background="#4C000000" Visibility="Collapsed">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="32" Foreground="White" TextAlignment="Center">
+                        <Run Text="&#xE011;" FontFamily="Segoe UI Symbol" FontSize="62"></Run><LineBreak></LineBreak>
+                        <Run>Drop to create a new item</Run>
+                    </TextBlock>
+                </Border>
+            </Grid>
 
             <Rectangle x:Name="InlineViewerBackground" HorizontalAlignment="Stretch" Fill="LightBlue" 
                        Grid.Column="1" />

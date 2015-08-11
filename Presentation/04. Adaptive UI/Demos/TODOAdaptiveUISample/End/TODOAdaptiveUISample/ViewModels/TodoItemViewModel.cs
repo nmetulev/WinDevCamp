@@ -70,6 +70,17 @@ namespace TODOAdaptiveUISample.ViewModels
             if (this.TodoItem != null)
                 await _todoItemRepository.UpdateTodoItem(this.TodoItem);
         }
+
+        public async Task SaveImage(StorageFile file)
+        {
+            if (file != null)
+            {
+                // Copy the file into local folder
+                await file.CopyAsync(ApplicationData.Current.LocalFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                // Save in the ToDoItem
+                TodoItem.ImageUri = new Uri("ms-appdata:///local/" + file.Name);
+            }
+        }
         #endregion
 
         #region Commands
@@ -91,14 +102,8 @@ namespace TODOAdaptiveUISample.ViewModels
                 openPicker.FileTypeFilter.Add(".png");
 
                 StorageFile file = await openPicker.PickSingleFileAsync();
+                await SaveImage(file);
 
-                if (file != null)
-                {
-                    // Copy the file into local folder
-                    await file.CopyAsync(ApplicationData.Current.LocalFolder, file.Name, NameCollisionOption.ReplaceExisting);
-                    // Save in the ToDoItem
-                    TodoItem.ImageUri = new Uri("ms-appdata:///local/" + file.Name);
-                }
             }
             finally { Busy = false; }
         }
@@ -125,13 +130,7 @@ namespace TODOAdaptiveUISample.ViewModels
                     file = await dialog.CaptureFileAsync(CameraCaptureUIMode.Photo);
                 }
 
-                if (file != null)
-                {
-                    // Copy the file into local folder
-                    await file.CopyAsync(ApplicationData.Current.LocalFolder, file.Name, NameCollisionOption.ReplaceExisting);
-                    // Save in the ToDoItem
-                    TodoItem.ImageUri = new Uri("ms-appdata:///local/" + file.Name);
-                }
+                await SaveImage(file);
             }
             finally { Busy = false; }
         }
