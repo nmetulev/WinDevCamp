@@ -39,6 +39,7 @@ namespace TODOAdaptiveUISample.Repositories
 
         public async Task InsertTodoItem(TodoItem item)
         {
+            if (_cache == null) await RefreshTodoItemsAsync();
             _cache.Add(item);
             await _fileService.WriteAsync<Models.TodoItem>(cachekey, _cache);
         }

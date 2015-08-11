@@ -38,5 +38,16 @@ namespace TODOAdaptiveUISample.Models
                 Set(ref _ImageUri, value);
             }
         }
+
+        private Uri _inkUri;
+        public Uri InkUri
+        {
+            get { return _inkUri; }
+            set
+            {
+                Set(ref _inkUri, value);
+            }
+        }
+
     }
 }
