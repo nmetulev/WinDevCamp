@@ -70,20 +70,29 @@ namespace TODOAdaptiveUISample.ViewModels
             if (this.TodoItem != null)
                 await _todoItemRepository.UpdateTodoItem(this.TodoItem);
         }
-
-        public async Task SaveImage(StorageFile file)
-        {
-            if (file != null)
-            {
-                // Copy the file into local folder
-                await file.CopyAsync(ApplicationData.Current.LocalFolder, file.Name, NameCollisionOption.GenerateUniqueName);
-                // Save in the ToDoItem
-                TodoItem.ImageUri = new Uri("ms-appdata:///local/" + file.Name);
-            }
-        }
+        
         #endregion
 
         #region Commands
+
+        Mvvm.Command<StorageFile> _SavePictureCommand = default(Mvvm.Command<StorageFile>);
+        public Mvvm.Command<StorageFile> SavePictureCommand { get { return _SavePictureCommand ?? (_SavePictureCommand = new Mvvm.Command<StorageFile>(ExecuteSavePictureCommand, CanExecuteSavePictureCommand)); } }
+        private bool CanExecuteSavePictureCommand(StorageFile file) { return !Busy; }
+        private async void ExecuteSavePictureCommand(StorageFile file)
+        {
+            try
+            {
+                if (file != null)
+                {
+                    // Copy the file into local folder
+                    await file.CopyAsync(ApplicationData.Current.LocalFolder, file.Name, NameCollisionOption.GenerateUniqueName);
+                    // Save in the ToDoItem
+                    TodoItem.ImageUri = new Uri("ms-appdata:///local/" + file.Name);
+                }
+
+            }
+            finally { Busy = false; }
+        }
 
         Mvvm.Command _SelectPictureCommand = default(Mvvm.Command);
         public Mvvm.Command SelectPictureCommand { get { return _SelectPictureCommand ?? (_SelectPictureCommand = new Mvvm.Command(ExecuteSelectPictureCommand, CanExecuteSelectPictureCommand)); } }
@@ -102,10 +111,10 @@ namespace TODOAdaptiveUISample.ViewModels
                 openPicker.FileTypeFilter.Add(".png");
 
                 StorageFile file = await openPicker.PickSingleFileAsync();
-                await SaveImage(file);
+                SavePictureCommand.Execute(file);
 
             }
-            finally { Busy = false; }
+            finally { /*Busy = false;*/ }
         }
 
 
@@ -130,9 +139,9 @@ namespace TODOAdaptiveUISample.ViewModels
                     file = await dialog.CaptureFileAsync(CameraCaptureUIMode.Photo);
                 }
 
-                await SaveImage(file);
+                SavePictureCommand.Execute(file);
             }
-            finally { Busy = false; }
+            finally { /*Busy = false;*/ }
         }
 
         Mvvm.Command<Models.TodoItem> _RemoveItemCommand = default(Mvvm.Command<Models.TodoItem>);

@@ -117,7 +117,7 @@ namespace TODOAdaptiveUISample.ViewModels
                 var itemVM = new ViewModels.TodoItemViewModel(item);
                 var index = this.ItemVMs.IndexOf(this.SelectedItem);
                 this.ItemVMs.Insert((index > -1) ? index : 0, itemVM);
-                await itemVM.SaveImage(file);
+                itemVM.SavePictureCommand.Execute(file);
                 this.SelectedItem = itemVM;
             }
             catch { this.SelectedItem = null; }

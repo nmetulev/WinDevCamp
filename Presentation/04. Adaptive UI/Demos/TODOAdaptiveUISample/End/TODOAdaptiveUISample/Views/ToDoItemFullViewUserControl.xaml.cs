@@ -48,7 +48,7 @@ namespace TODOAdaptiveUISample.Views
                     if (storageFile.ContentType.Contains("image"))
                     {
                         var viewModel = DataContext as ViewModels.TodoItemViewModel;
-                        await viewModel.SaveImage(storageFile);
+                        viewModel.SavePictureCommand.Execute(storageFile);
                     }
                 }
             }
