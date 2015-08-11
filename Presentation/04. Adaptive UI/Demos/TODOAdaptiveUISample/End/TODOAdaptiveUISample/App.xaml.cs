@@ -32,7 +32,7 @@ namespace TODOAdaptiveUISample
             };
 
             // Navigate to MainPage
-            this.NavigationService.Navigate(typeof(Views.MainPage));
+            this.NavigationService.Navigate(typeof(Views.UserSelect));
             return Task.FromResult<object>(null);
         }
 
