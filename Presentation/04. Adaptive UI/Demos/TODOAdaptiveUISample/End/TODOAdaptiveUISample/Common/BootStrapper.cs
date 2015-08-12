@@ -133,6 +133,7 @@ namespace TODOAdaptiveUISample.Common
 
             // Hook up notifications
             var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            channel.PushNotificationReceived += Channel_PushNotificationReceived;
             NotificationHub hub = new NotificationHub(hubPath, connectionStr);
             await hub.RegisterNativeAsync(channel.Uri);
 
@@ -141,6 +142,11 @@ namespace TODOAdaptiveUISample.Common
 
             // Hook up the default Back handler
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+        }
+
+        private void Channel_PushNotificationReceived(PushNotificationChannel sender, PushNotificationReceivedEventArgs args)
+        {
+            
         }
 
         /// <summary>

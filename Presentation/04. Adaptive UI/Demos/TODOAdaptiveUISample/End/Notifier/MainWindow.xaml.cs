@@ -32,13 +32,25 @@ namespace Notifier
             this.Loaded += (s, e) => { Combo.ItemsSource = ToastItem.Defaults(); Combo.SelectedIndex = 1; };
         }
 
-        private async Task sendNotification(string xml)
+        private async Task sendNotification(string content)
         {
             if (hub == null)
                 hub = NotificationHubClient.CreateClientFromConnectionString(connectionStr, hubPath);
 
             //var toast = @"<toast launch=""MainPage.xaml?param=neworder""><visual><binding template=""ToastText01""><text id=""1"">" + msg + @"</text></binding></visual></toast>";
-            await hub.SendWindowsNativeNotificationAsync(xml);
+
+            if (rawCheck.IsChecked == true)
+            {
+                Notification notification = new WindowsNotification(content);
+                notification.Headers.Add("X-WNS-Type", "wns/raw");
+                await hub.SendNotificationAsync(notification);
+            }
+            else
+            {
+                await hub.SendWindowsNativeNotificationAsync(content);
+            }
+
+            
         }
         
 
