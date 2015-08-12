@@ -6,6 +6,9 @@ using Windows.ApplicationModel;
 using Windows.UI.Xaml.Controls;
 using Windows.ApplicationModel.Activation;
 using System.Diagnostics;
+using Windows.Networking.PushNotifications;
+using Microsoft.WindowsAzure.Messaging;
+using Windows.ApplicationModel.Background;
 
 namespace TODOAdaptiveUISample.Common
 {
@@ -16,6 +19,12 @@ namespace TODOAdaptiveUISample.Common
     // - NavigationService is an automatic property of this class
     public abstract class BootStrapper : Application
     {
+
+        string connectionStr = "Endpoint=sb://todomva.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=uA4EApoi/woP0l/4k6ma44qNtLeqaiML4oEUpWUwfn0=";
+        string hubPath = "todomva";
+
+        static readonly string BACKGROUND_ENTRY_POINT = typeof(NotificationTask.NotificationTask).FullName;
+
         /// <summary>
         /// Event to allow views and viewmodels to intercept the Hardware/Shell Back request and 
         /// implement their own logic, such as closing a dialog. In your event handler, set the
@@ -122,6 +131,13 @@ namespace TODOAdaptiveUISample.Common
                 }
             }
 
+            // Hook up notifications
+            var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            NotificationHub hub = new NotificationHub(hubPath, connectionStr);
+            await hub.RegisterNativeAsync(channel.Uri);
+
+            // Hook up background task for notifications
+            await RegisterBackgroundTask();
 
             // Hook up the default Back handler
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
@@ -152,6 +168,42 @@ namespace TODOAdaptiveUISample.Common
             }
         }
 
+        private async Task<bool> RegisterBackgroundTask()
+        {
+            // Unregister any previous exising background task
+            UnregisterBackgroundTask();
+
+            // Request access
+            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+
+            // If denied
+            if (status != BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity && status != BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity)
+                return false;
+
+            // Construct the background task
+            BackgroundTaskBuilder builder = new BackgroundTaskBuilder()
+            {
+                Name = BACKGROUND_ENTRY_POINT,
+                TaskEntryPoint = BACKGROUND_ENTRY_POINT
+            };
+
+            // Set trigger for Toast History Changed
+            builder.SetTrigger(new ToastNotificationActionTrigger());
+
+            // And register the background task
+            BackgroundTaskRegistration registration = builder.Register();
+
+            return true;
+        }
+
+        private static void UnregisterBackgroundTask()
+        {
+            var task = BackgroundTaskRegistration.AllTasks.Values.FirstOrDefault(i => i.Name.Equals(BACKGROUND_ENTRY_POINT));
+
+            if (task != null)
+                task.Unregister(true);
+        }
+
         #region overrides
 
         public virtual Task OnInitializeAsync() { return Task.FromResult<object>(null); }
@@ -172,6 +224,28 @@ namespace TODOAdaptiveUISample.Common
 
             // the user may override to set custom content
             await OnInitializeAsync();
+
+
+            //string itemToSelect = null;
+            //if (e.Kind == ActivationKind.ToastNotification)
+            //{
+            //    var toastArgss = e as ToastNotificationActivatedEventArgs;
+            //    var arguments = toastArgss.Argument.Split(':');
+
+            //    if (arguments.Count() > 0)
+            //    {
+
+            //        switch (arguments[0])
+            //        {
+            //            case "edit":
+            //                if (arguments.Count() > 1)
+            //                {
+            //                    itemToSelect = arguments[1];
+            //                }
+            //                break;
+            //        }
+            //    }
+            //}
 
             if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {

@@ -77,9 +77,13 @@ namespace TODOAdaptiveUISample.ViewModels
 
                 var data = await _todoItemRepository.RefreshTodoItemsAsync();
                 this.ItemVMs.Clear();
-                foreach (var item in data.OrderBy(x => x.Title))
+                foreach (var item in data.OrderBy(x => x.DueDate))
                 {
                     this.ItemVMs.Add(new ViewModels.TodoItemViewModel(item));
+                }
+                if (this.ItemVMs.Count > 0)
+                {
+                    SelectedItem = this.ItemVMs.First();
                 }
             }
             finally { Busy = false; }
