@@ -124,7 +124,7 @@ $@"<toast activationType='background' launch='args' scenario='reminder' argument
             <text>Don't forget</text>
             <text>'Prepare notification demo for MVA' is due today</text>
             <text>You should do this so you don't look stupid in front of everyone</text>
-            <image src='ms-appdata:///local/468063_356951394336661_1182523391_o.jpg'/>
+            <image src='ms-appdata:///Local/andy.jpg'/>
         </binding>
     </visual>
     <actions hint-systemCommands = 'SnoozeAndDismiss' >
@@ -133,7 +133,13 @@ $@"<toast activationType='background' launch='args' scenario='reminder' argument
     </actions>
 </toast>"
             });
-            
+
+            list.Add(new ToastItem()
+            {
+                Name = "Raw",
+                xml ="new_items:3"
+            });
+
 
             return list;
 

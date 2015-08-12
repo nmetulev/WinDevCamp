@@ -32,6 +32,11 @@
             <Task Type="systemEvent" />
           </BackgroundTasks>
         </Extension>
+        <Extension Category="windows.backgroundTasks" EntryPoint="NotificationTask.RawNotificationTask">
+          <BackgroundTasks>
+            <Task Type="pushNotification" />
+          </BackgroundTasks>
+        </Extension>
       </Extensions>
     </Application>
   </Applications>
