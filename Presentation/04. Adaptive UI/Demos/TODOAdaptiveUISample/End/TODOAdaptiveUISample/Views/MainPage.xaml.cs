@@ -3,6 +3,7 @@ using System.Linq;
 using TODOAdaptiveUISample.ViewModels;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Media.SpeechRecognition;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -12,6 +13,9 @@ namespace TODOAdaptiveUISample.Views
 {
     public sealed partial class MainPage : Page
     {
+        SpeechRecognizer _contSpeechRecognizer;
+        SpeechRecognizer _speechRecognizer;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -138,5 +142,7 @@ namespace TODOAdaptiveUISample.Views
             DropBackgrund.Visibility = Visibility.Collapsed;
 
         }
+
+
     }
 }

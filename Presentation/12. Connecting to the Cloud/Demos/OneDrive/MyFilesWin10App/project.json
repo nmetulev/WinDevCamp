@@ -3,9 +3,10 @@
     "Microsoft.ApplicationInsights": "1.0.0",
     "Microsoft.ApplicationInsights.PersistenceChannel": "1.0.0",
     "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
+    "Microsoft.IdentityModel.Clients.ActiveDirectory": "2.14.201151115",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
-    "Newtonsoft.Json": "7.0.1",
-    "WindowsAzure.MobileServices": "2.0.0-beta"
+    "Microsoft.Office365.Discovery": "1.0.22",
+    "Microsoft.Office365.SharePoint": "1.0.22"
   },
   "frameworks": {
     "uap10.0": {}
