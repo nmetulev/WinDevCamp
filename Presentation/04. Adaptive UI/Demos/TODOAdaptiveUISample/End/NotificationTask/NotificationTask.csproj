@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{65BD20F1-4E5A-4AF4-B2ED-7EE89CB1D26F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{CAF5314E-4494-4AD9-86BD-49E6CD4A886E}</ProjectGuid>
+    <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ToDoLibrary</RootNamespace>
-    <AssemblyName>ToDoLibrary</AssemblyName>
+    <RootNamespace>NotificationTask</RootNamespace>
+    <AssemblyName>NotificationTask</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
@@ -114,50 +114,17 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\TODOAdaptiveUISample\Models\TodoItem.cs">
-      <Link>Models\TodoItem.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Mvvm\BindableBase.cs">
-      <Link>Mvvm\BindableBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Mvvm\Command.cs">
-      <Link>Mvvm\Command.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Mvvm\ViewModelBase.cs">
-      <Link>Mvvm\ViewModelBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Repositories\ITodoItemRepository.cs">
-      <Link>Repositories\ITodoItemRepository.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Repositories\TodoItemFileRepository.cs">
-      <Link>Repositories\TodoItemFileRepository.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\FileService\FileHelper.cs">
-      <Link>Services\FileService\FileHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\FileService\FileService.cs">
-      <Link>Services\FileService\FileService.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\INavigatable.cs">
-      <Link>Services\NavigationService\INavigatable.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\NavigationEventArgs.cs">
-      <Link>Services\NavigationService\NavigationEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\NavigationFacade.cs">
-      <Link>Services\NavigationService\NavigationFacade.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\NavigationService.cs">
-      <Link>Services\NavigationService\NavigationService.cs</Link>
-    </Compile>
-    <Compile Include="Helpers\ToastHelper.cs" />
+    <Compile Include="NotificationTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoLibrary\ToDoLibrary.csproj">
+      <Project>{65bd20f1-4e5a-4af4-b2ed-7ee89cb1d26f}</Project>
+      <Name>ToDoLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

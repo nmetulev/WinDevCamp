@@ -154,6 +154,7 @@
     <Content Include="Images\Placeholder2.png" />
     <Content Include="Images\Placeholder3.png" />
     <Content Include="Images\Placeholder4.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="vcd.xml">
       <SubType>Designer</SubType>
@@ -207,6 +208,10 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NotificationTask\NotificationTask.csproj">
+      <Project>{caf5314e-4494-4ad9-86bd-49e6cd4a886e}</Project>
+      <Name>NotificationTask</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToDoVoiceService\ToDoVoiceService.csproj">
       <Project>{c83521f2-84c3-4898-a93f-8f54aa691a2f}</Project>
       <Name>ToDoVoiceService</Name>
