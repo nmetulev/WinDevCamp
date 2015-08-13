@@ -24,19 +24,23 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#00BCF2" />
       </uap:VisualElements>
       <Extensions>
+        
         <uap:Extension Category="windows.appService" EntryPoint="ToDoVoiceService.Service">
           <uap:AppService Name="VoiceServiceEndpoint" />
         </uap:Extension>
+        
         <Extension Category="windows.backgroundTasks" EntryPoint="NotificationTask.NotificationTask">
           <BackgroundTasks>
             <Task Type="systemEvent" />
           </BackgroundTasks>
         </Extension>
+        
         <Extension Category="windows.backgroundTasks" EntryPoint="NotificationTask.RawNotificationTask">
           <BackgroundTasks>
             <Task Type="pushNotification" />
           </BackgroundTasks>
         </Extension>
+        
       </Extensions>
     </Application>
   </Applications>
