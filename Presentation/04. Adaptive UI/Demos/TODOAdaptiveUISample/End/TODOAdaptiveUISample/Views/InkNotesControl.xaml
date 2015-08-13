@@ -148,6 +148,8 @@
                         
                         <!-- Inking area -->
                         <InkCanvas x:Name="inkCanvas"/>
+
+                        <!--https://visualstudiogallery.msdn.microsoft.com/58194dfe-df44-4c4e-893a-1eca40675269-->
                         <!--<inkTools:InkToolbar TargetInkCanvas="{x:Bind inkCanvas}" VerticalAlignment="Top" HorizontalAlignment="Left"></inkTools:InkToolbar>-->
                         
                     </Grid>
