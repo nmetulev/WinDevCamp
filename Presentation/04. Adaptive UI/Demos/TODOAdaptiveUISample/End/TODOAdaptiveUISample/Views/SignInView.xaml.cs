@@ -29,7 +29,6 @@ namespace TODOAdaptiveUISample.Views
     /// </summary>
     public sealed partial class SignInView : Page
     {
-        private MainPage rootPage;
         private bool m_addingAccount = true;
         private Account m_account;
         private bool m_passportAvailable = true;
