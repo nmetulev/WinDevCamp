@@ -11,68 +11,17 @@
     d:DesignWidth="400">
 
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="ColorButtonStyle"  TargetType="Button">
-                <Setter Property="MinWidth" Value="28"/>
-                <Setter Property="MinHeight" Value="28"/>
-                <Setter Property="Width" Value="28"/>
-                <Setter Property="Height" Value="28"/>
-                <Setter Property="Margin" Value="0,0,0,0"/>
-                <Setter Property="FontSize" Value="0"/>
-                <Setter Property="Padding" Value="0,0,0,0"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Grid Background="Transparent">
-                                <Grid Background="Transparent">
-                                    <Border x:Name="ColorButtonOuterBorder"
-                                        BorderThickness="1"
-                                        BorderBrush="Orange"
-                                        Background="Transparent">
-                                        <Border
-                                            BorderBrush="LightGray"
-                                            BorderThickness="1"
-                                            Background="{TemplateBinding Background}"/>
-                                    </Border>
-                                </Grid>
-
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal"/>
-                                        <VisualState x:Name="PointerOver">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ColorButtonOuterBorder" Storyboard.TargetProperty="BorderThickness">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="2"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="Pressed"/>
-                                        <VisualState x:Name="Disabled"/>
-                                    </VisualStateGroup>
-                                    <VisualStateGroup x:Name="FocusStates">
-                                        <VisualState x:Name="Focused">
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ColorButtonOuterBorder" Storyboard.TargetProperty="BorderThickness">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="2"/>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="Unfocused"/>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Resources>
         <SplitView x:Name="splitView" PanePlacement="Right" DisplayMode="Overlay" IsPaneOpen="false" PaneBackground="#66FFFFFF">
             <SplitView.Pane>
                 <Grid>
-                    <Button VerticalAlignment="Top" HorizontalAlignment="Right" Content="Close" Click="CloseOptions"></Button>
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="White" Click="CloseOptions">
+                        <TextBlock FontSize="32" FontFamily="Segoe UI Symbol" Foreground="#B200DFEA">&#xE013;</TextBlock>
+                    </Button>
                     
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -128,14 +77,16 @@
                             <Button Background="Blue"   Foreground="Blue"   Click="OnPenColorChanged" Style="{StaticResource ColorButtonStyle}" Margin="0,0,3,0"/>
                             <Button Background="Yellow" Foreground="Yellow" Click="OnPenColorChanged" Style="{StaticResource ColorButtonStyle}" Margin="0,0,3,0"/>
                         </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,5" Orientation="Horizontal">
+                            <Button Content="Clear" Width="65" Margin="0,0,3,0" Click="OnClear"/>
+                            <CheckBox Content="Erase" Margin="10,0,3,0" Checked="ErasingModeCheckBox_Checked" Unchecked="ErasingModeCheckBox_Unchecked"/>
+                            <Button Click="Reco_Click" Content="Recognize"  Margin="0,0,3,0"></Button>
+                        </StackPanel>
+                        <TextBlock x:Name="recoResult" Grid.Row="4" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5"></TextBlock>
                     </Grid>
 
                     <!-- Button panel -->
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <Button Content="Clear" Width="65" Margin="0,0,3,0" Click="OnClear"/>
-                        <!--<CheckBox Content="Enable Touch Inking" Margin="10,0,3,0" Checked="TouchInkingCheckBox_Checked" Unchecked="TouchInkingCheckBox_Unchecked"/>-->
-                        <CheckBox Content="Erase" Margin="10,0,3,0" Checked="ErasingModeCheckBox_Checked" Unchecked="ErasingModeCheckBox_Unchecked"/>
-                    </StackPanel>
+                    
                 </Grid>
             </SplitView.Pane>
             <Grid>
@@ -145,20 +96,27 @@
                 
                 <ScrollViewer ZoomMode="Enabled" MinZoomFactor="1" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
                     <Grid x:Name="outputGrid" Background="{ThemeResource SystemControlBackgroundChromeWhiteBrush}">
+                        <!--<Canvas x:Name="justACanvas" />-->
+                        
+                        
                         
                         <!-- Inking area -->
                         <InkCanvas x:Name="inkCanvas"/>
 
+                        
+                        
+                        
                         <!--https://visualstudiogallery.msdn.microsoft.com/58194dfe-df44-4c4e-893a-1eca40675269-->
                         <!--<inkTools:InkToolbar TargetInkCanvas="{x:Bind inkCanvas}" VerticalAlignment="Top" HorizontalAlignment="Left"></inkTools:InkToolbar>-->
-                        
                     </Grid>
                 </ScrollViewer>
 
-                
-                
-                
-                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Content="Open" Click="OpenOptions"></Button>
+
+
+
+                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="Transparent" Click="OpenOptions">
+                    <TextBlock FontSize="32" FontFamily="Segoe UI Symbol" Foreground="#B200DFEA">&#xE012;</TextBlock>
+                </Button>
             </Grid>
            
 
