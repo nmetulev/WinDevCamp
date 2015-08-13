@@ -114,44 +114,19 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\TODOAdaptiveUISample\Models\TodoItem.cs">
-      <Link>Models\TodoItem.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Mvvm\BindableBase.cs">
-      <Link>Mvvm\BindableBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Mvvm\Command.cs">
-      <Link>Mvvm\Command.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Mvvm\ViewModelBase.cs">
-      <Link>Mvvm\ViewModelBase.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Repositories\ITodoItemRepository.cs">
-      <Link>Repositories\ITodoItemRepository.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Repositories\TodoItemFileRepository.cs">
-      <Link>Repositories\TodoItemFileRepository.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\FileService\FileHelper.cs">
-      <Link>Services\FileService\FileHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\FileService\FileService.cs">
-      <Link>Services\FileService\FileService.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\INavigatable.cs">
-      <Link>Services\NavigationService\INavigatable.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\NavigationEventArgs.cs">
-      <Link>Services\NavigationService\NavigationEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\NavigationFacade.cs">
-      <Link>Services\NavigationService\NavigationFacade.cs</Link>
-    </Compile>
-    <Compile Include="..\TODOAdaptiveUISample\Services\NavigationService\NavigationService.cs">
-      <Link>Services\NavigationService\NavigationService.cs</Link>
-    </Compile>
-    <Compile Include="Helpers\ToastHelper.cs" />
+    <Compile Include="Models\TodoItem.cs" />
+    <Compile Include="Mvvm\BindableBase.cs" />
+    <Compile Include="Mvvm\Command.cs" />
+    <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ITodoItemRepository.cs" />
+    <Compile Include="Repositories\TodoItemFileRepository.cs" />
+    <Compile Include="Services\FileService\FileHelper.cs" />
+    <Compile Include="Services\FileService\FileService.cs" />
+    <Compile Include="Services\NavigationService\INavigatable.cs" />
+    <Compile Include="Services\NavigationService\NavigationEventArgs.cs" />
+    <Compile Include="Services\NavigationService\NavigationFacade.cs" />
+    <Compile Include="Services\NavigationService\NavigationService.cs" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

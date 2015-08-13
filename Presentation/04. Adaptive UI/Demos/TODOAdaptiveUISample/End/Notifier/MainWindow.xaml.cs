@@ -67,7 +67,8 @@ namespace Notifier
             var item = (sender as ComboBox).SelectedItem;
             if (item != null)
             {
-                Box.Text = (item as ToastItem).xml;
+                Box.Text = (item as ToastItem).Content;
+                rawCheck.IsChecked = (item as ToastItem).Raw;
             }
         }
     }
@@ -75,7 +76,8 @@ namespace Notifier
     public class ToastItem
     {
         public string Name { get; set; }
-        public string xml { get; set; }
+        public string Content { get; set; }
+        public bool Raw { get; set; } = false;
 
         public override string ToString()
         {
@@ -88,7 +90,7 @@ namespace Notifier
 
             // http://blogs.msdn.com/b/tiles_and_toasts/archive/2015/07/02/adaptive-and-interactive-toast-notifications-for-windows-10.aspx
 
-            list.Add(new ToastItem() { Name = "TextOnly", xml = 
+            list.Add(new ToastItem() { Name = "TextOnly", Content = 
 $@"<toast launch=""MainPage.xaml?param=neworder"">
     <visual>
         <binding template=""ToastText01"">
@@ -101,7 +103,7 @@ $@"<toast launch=""MainPage.xaml?param=neworder"">
             list.Add(new ToastItem()
             {
                 Name = "Reminder",
-                xml =
+                Content =
 $@"<toast activationType='background' launch='args' scenario='reminder' arguments='hello'>
     <visual>
         <binding template='ToastGeneric'>
@@ -116,8 +118,8 @@ $@"<toast activationType='background' launch='args' scenario='reminder' argument
 
             list.Add(new ToastItem()
             {
-                Name = "Demo1",
-                xml =
+                Name = "ToDoItemDue",
+                Content =
 $@"<toast activationType='background' launch='args' scenario='reminder' arguments='fe8f5b3c-8ea4-4c23-8bc8-555b39c0f4da'>
     <visual>
         <binding template='ToastGeneric'>
@@ -136,8 +138,9 @@ $@"<toast activationType='background' launch='args' scenario='reminder' argument
 
             list.Add(new ToastItem()
             {
-                Name = "Raw",
-                xml ="new_items:3"
+                Name = "UpdateBadge",
+                Content ="new_items:3",
+                Raw = true
             });
 
 
