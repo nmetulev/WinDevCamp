@@ -13,7 +13,7 @@ namespace NotificationTask
 {
     public sealed class RawNotificationTask : IBackgroundTask
     {
-        public async void Run(IBackgroundTaskInstance taskInstance)
+        public void Run(IBackgroundTaskInstance taskInstance)
         {
             var deferal = taskInstance.GetDeferral();
             if (taskInstance.TriggerDetails is RawNotification)

@@ -138,8 +138,8 @@ namespace TODOAdaptiveUISample.Common
             await hub.RegisterNativeAsync(channel.Uri);
 
             // Hook up background task for notifications
-            await RegisterActionableToastBackgroundTask();
             await RegisterRawNotificationBackgroundTask();
+            await RegisterActionableToastBackgroundTask();
 
             // Hook up the default Back handler
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
