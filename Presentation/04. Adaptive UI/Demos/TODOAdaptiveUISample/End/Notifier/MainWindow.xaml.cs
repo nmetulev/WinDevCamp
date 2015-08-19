@@ -23,8 +23,8 @@ namespace Notifier
     {
         NotificationHubClient hub;
 
-        string connectionStr = "Endpoint=sb://todomva.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=uA4EApoi/woP0l/4k6ma44qNtLeqaiML4oEUpWUwfn0=";
-        string hubPath = "todomva";
+        string connectionStr = "<CONNECTION STR>";
+        string hubPath = "<HUB PATH>";
         public MainWindow()
         {
             InitializeComponent();

@@ -20,8 +20,8 @@ namespace TODOAdaptiveUISample.Common
     public abstract class BootStrapper : Application
     {
 
-        string connectionStr = "Endpoint=sb://todomva.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=uA4EApoi/woP0l/4k6ma44qNtLeqaiML4oEUpWUwfn0=";
-        string hubPath = "todomva";
+        string connectionStr = "<CONNECTION STR>";
+        string hubPath = "<HUB PATH>";
 
         static readonly string ACTIONABLE_BACKGROUND_ENTRY_POINT = typeof(NotificationTask.NotificationTask).FullName;
         static readonly string RAW_BACKGROUND_ENTRY_POINT = typeof(NotificationTask.RawNotificationTask).FullName;
@@ -133,9 +133,10 @@ namespace TODOAdaptiveUISample.Common
             }
 
             // Hook up notifications
-            var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-            NotificationHub hub = new NotificationHub(hubPath, connectionStr);
-            await hub.RegisterNativeAsync(channel.Uri);
+            // Modify variables at the begining of this page and uncomment these lines
+            //var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            //NotificationHub hub = new NotificationHub(hubPath, connectionStr);
+            //await hub.RegisterNativeAsync(channel.Uri);
 
             // Hook up background task for notifications
             await RegisterRawNotificationBackgroundTask();
@@ -254,28 +255,6 @@ namespace TODOAdaptiveUISample.Common
 
             // the user may override to set custom content
             await OnInitializeAsync();
-
-
-            //string itemToSelect = null;
-            //if (e.Kind == ActivationKind.ToastNotification)
-            //{
-            //    var toastArgss = e as ToastNotificationActivatedEventArgs;
-            //    var arguments = toastArgss.Argument.Split(':');
-
-            //    if (arguments.Count() > 0)
-            //    {
-
-            //        switch (arguments[0])
-            //        {
-            //            case "edit":
-            //                if (arguments.Count() > 1)
-            //                {
-            //                    itemToSelect = arguments[1];
-            //                }
-            //                break;
-            //        }
-            //    }
-            //}
 
             if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {
