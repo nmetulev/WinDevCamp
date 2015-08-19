@@ -99,20 +99,7 @@
     <Compile Include="Converters\DateTimeToDateTimeOffsetConverter.cs" />
     <Compile Include="Converters\ValueWhenConverter.cs" />
     <Compile Include="Converters\DateTimeFormatConverter.cs" />
-    <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\TodoItem.cs" />
-    <Compile Include="Mvvm\BindableBase.cs" />
-    <Compile Include="Mvvm\Command.cs" />
-    <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ITodoItemRepository.cs" />
-    <Compile Include="Repositories\TodoItemFileRepository.cs" />
-    <Compile Include="Services\FileService\FileHelper.cs" />
-    <Compile Include="Services\FileService\FileService.cs" />
-    <Compile Include="Services\NavigationService\INavigatable.cs" />
-    <Compile Include="Services\NavigationService\NavigationEventArgs.cs" />
-    <Compile Include="Services\NavigationService\NavigationFacade.cs" />
-    <Compile Include="Services\NavigationService\NavigationService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\TodoItemViewModel.cs" />
     <Compile Include="Views\InkNotesControl.xaml.cs">
@@ -217,6 +204,9 @@
     <None Include="TODOAdaptiveUISample_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <SDKReference Include="InkToolbarControl, Version=0.3.2">
+      <Name>InkToolbar Control</Name>
+    </SDKReference>
     <SDKReference Include="WindowsDesktop, Version=10.0.10240.0">
       <Name>Windows Desktop Extensions for the UWP</Name>
     </SDKReference>
@@ -228,6 +218,10 @@
     <ProjectReference Include="..\NotificationTask\NotificationTask.csproj">
       <Project>{caf5314e-4494-4ad9-86bd-49e6cd4a886e}</Project>
       <Name>NotificationTask</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToDoLibrary\ToDoLibrary.csproj">
+      <Project>{65bd20f1-4e5a-4af4-b2ed-7ee89cb1d26f}</Project>
+      <Name>ToDoLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\ToDoVoiceService\ToDoVoiceService.csproj">
       <Project>{c83521f2-84c3-4898-a93f-8f54aa691a2f}</Project>

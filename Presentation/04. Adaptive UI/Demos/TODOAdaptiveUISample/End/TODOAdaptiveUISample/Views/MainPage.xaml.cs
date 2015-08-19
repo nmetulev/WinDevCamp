@@ -114,6 +114,7 @@ namespace TODOAdaptiveUISample.Views
         {
             e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Link;
             DropBackgrund.Visibility = Visibility.Visible;
+            e.DragUIOverride.Caption = "Drop me now!";
         }
 
         private async void Grid_Drop(object sender, DragEventArgs e)
@@ -140,7 +141,6 @@ namespace TODOAdaptiveUISample.Views
         private void Grid_DragLeave(object sender, DragEventArgs e)
         {
             DropBackgrund.Visibility = Visibility.Collapsed;
-
         }
 
 

@@ -42,13 +42,9 @@ namespace TODOAdaptiveUISample.Views
 
             inkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
             inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Pen;
-
-            outputGrid.Width = Window.Current.Bounds.Width;
-            outputGrid.Height = Window.Current.Bounds.Height;
-            inkCanvas.Width = Window.Current.Bounds.Width;
-            inkCanvas.Height = Window.Current.Bounds.Height;
         }
 
+        #region SaveLoad
         public async Task Load(Uri uri)
         {
             if (uri != null)
@@ -72,25 +68,6 @@ namespace TODOAdaptiveUISample.Views
                     }
                     
                 }
-            }
-        }
-
-        public async Task<Uri> Save()
-        {
-            var filename = DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".gif";
-            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filename);
-            return await SaveToFile(file);
-        }
-
-        public async Task<Uri> Save(Uri uri)
-        {
-            if (uri != null)
-            {
-                return await SaveToFile(await StorageFile.GetFileFromApplicationUriAsync(uri));
-            }
-            else
-            {
-                throw new NullReferenceException("Uri canot be null");
             }
         }
 
@@ -121,8 +98,28 @@ namespace TODOAdaptiveUISample.Views
             return uri;
         }
 
+        public async Task<Uri> Save()
+        {
+            var filename = DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".gif";
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(filename);
+            return await SaveToFile(file);
+        }
 
+        public async Task<Uri> Save(Uri uri)
+        {
+            if (uri != null)
+            {
+                return await SaveToFile(await StorageFile.GetFileFromApplicationUriAsync(uri));
+            }
+            else
+            {
+                throw new NullReferenceException("Uri canot be null");
+            }
+        }
 
+        #endregion
+
+        #region InkPresenterPropertiesUpdate
         void OnPenColorChanged(object sender, RoutedEventArgs e)
         {
             if (inkCanvas != null)
@@ -199,11 +196,6 @@ namespace TODOAdaptiveUISample.Views
             inkCanvas.InkPresenter.StrokeContainer.Clear();
         }
 
-        private void TouchInkingCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Pen | Windows.UI.Core.CoreInputDeviceTypes.Touch;
-        }
-
         private void TouchInkingCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Pen;
@@ -218,8 +210,48 @@ namespace TODOAdaptiveUISample.Views
         {
             inkCanvas.InkPresenter.InputProcessingConfiguration.Mode = InkInputProcessingMode.Inking;
         }
+        #endregion
 
+        #region Recognizer
+        private async void Reco_Click(object sender, RoutedEventArgs e)
+        {
+            if (inkCanvas.InkPresenter.StrokeContainer.GetStrokes().Count > 0)
+            {
+                var recognizer = new InkRecognizerContainer();
+                var recognitionResults = await recognizer.RecognizeAsync(inkCanvas.InkPresenter.StrokeContainer, InkRecognitionTarget.All);
 
+                string result = "";
+                //justACanvas.Children.Clear();
+
+                if (recognitionResults.Count > 0)
+                {
+                    foreach (var r in recognitionResults)
+                    {
+                        var candidates = r.GetTextCandidates();
+                        result += " " + candidates[0];
+
+                        //var rect = r.BoundingRect;
+                        //var text = new TextBlock();
+                        //text.Text = candidates[0];
+                        //justACanvas.Children.Add(text);
+                        //Canvas.SetTop(text, rect.Bottom + 5);
+                        //Canvas.SetLeft(text, rect.Left);
+                    }
+                }
+                else
+                    result = "NO TEXT RECOGNIZED!";
+
+                recoResult.Text = result;
+            }
+        }
+
+        #endregion
+
+        #region Selection
+
+        #endregion
+
+        #region click
         private void OpenOptions(object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = true;
@@ -229,5 +261,6 @@ namespace TODOAdaptiveUISample.Views
         {
             splitView.IsPaneOpen = false;
         }
+        #endregion
     }
 }

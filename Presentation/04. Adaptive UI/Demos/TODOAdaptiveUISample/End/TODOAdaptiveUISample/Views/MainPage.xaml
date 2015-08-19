@@ -66,7 +66,16 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid x:Name="ListViewGrid" AllowDrop="True" DragOver="Grid_DragOver" Drop="Grid_Drop" DragLeave="Grid_DragLeave" VerticalAlignment="Stretch" Background="Transparent">
+            
+            
+            
+            <Grid x:Name="ListViewGrid" 
+                  AllowDrop="True" 
+                  DragOver="Grid_DragOver" 
+                  Drop="Grid_Drop" 
+                  DragLeave="Grid_DragLeave" 
+                  VerticalAlignment="Stretch" 
+                  Background="Transparent">
                 <ListView x:Name="ToDoListView" Padding="0,0,0,12" MaxWidth="980"
                                 IsItemClickEnabled="True" ItemClick="TodoItem_ItemClicked"
                                 ItemsSource="{Binding ItemVMs}" VerticalAlignment="Top" 

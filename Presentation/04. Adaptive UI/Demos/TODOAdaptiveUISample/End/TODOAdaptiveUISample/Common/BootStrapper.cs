@@ -20,10 +20,11 @@ namespace TODOAdaptiveUISample.Common
     public abstract class BootStrapper : Application
     {
 
-        string connectionStr = "Endpoint=sb://todomva.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=uA4EApoi/woP0l/4k6ma44qNtLeqaiML4oEUpWUwfn0=";
-        string hubPath = "todomva";
+        string connectionStr = "<CONNECTION STR>";
+        string hubPath = "<HUB PATH>";
 
-        static readonly string BACKGROUND_ENTRY_POINT = typeof(NotificationTask.NotificationTask).FullName;
+        static readonly string ACTIONABLE_BACKGROUND_ENTRY_POINT = typeof(NotificationTask.NotificationTask).FullName;
+        static readonly string RAW_BACKGROUND_ENTRY_POINT = typeof(NotificationTask.RawNotificationTask).FullName;
 
         /// <summary>
         /// Event to allow views and viewmodels to intercept the Hardware/Shell Back request and 
@@ -132,12 +133,14 @@ namespace TODOAdaptiveUISample.Common
             }
 
             // Hook up notifications
-            var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-            NotificationHub hub = new NotificationHub(hubPath, connectionStr);
-            await hub.RegisterNativeAsync(channel.Uri);
+            // Modify variables at the begining of this page and uncomment these lines
+            //var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            //NotificationHub hub = new NotificationHub(hubPath, connectionStr);
+            //await hub.RegisterNativeAsync(channel.Uri);
 
             // Hook up background task for notifications
-            await RegisterBackgroundTask();
+            await RegisterRawNotificationBackgroundTask();
+            await RegisterActionableToastBackgroundTask();
 
             // Hook up the default Back handler
             Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
@@ -168,10 +171,10 @@ namespace TODOAdaptiveUISample.Common
             }
         }
 
-        private async Task<bool> RegisterBackgroundTask()
+        private async Task<bool> RegisterActionableToastBackgroundTask()
         {
             // Unregister any previous exising background task
-            UnregisterBackgroundTask();
+            UnregisterBackgroundTask(ACTIONABLE_BACKGROUND_ENTRY_POINT);
 
             // Request access
             BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
@@ -183,8 +186,8 @@ namespace TODOAdaptiveUISample.Common
             // Construct the background task
             BackgroundTaskBuilder builder = new BackgroundTaskBuilder()
             {
-                Name = BACKGROUND_ENTRY_POINT,
-                TaskEntryPoint = BACKGROUND_ENTRY_POINT
+                Name = ACTIONABLE_BACKGROUND_ENTRY_POINT,
+                TaskEntryPoint = ACTIONABLE_BACKGROUND_ENTRY_POINT
             };
 
             // Set trigger for Toast History Changed
@@ -196,9 +199,37 @@ namespace TODOAdaptiveUISample.Common
             return true;
         }
 
-        private static void UnregisterBackgroundTask()
+        private async Task<bool> RegisterRawNotificationBackgroundTask()
         {
-            var task = BackgroundTaskRegistration.AllTasks.Values.FirstOrDefault(i => i.Name.Equals(BACKGROUND_ENTRY_POINT));
+            // Unregister any previous exising background task
+            UnregisterBackgroundTask(RAW_BACKGROUND_ENTRY_POINT);
+
+            // Request access
+            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+
+            // If denied
+            if (status != BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity && status != BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity)
+                return false;
+
+            // Construct the background task
+            BackgroundTaskBuilder builder = new BackgroundTaskBuilder()
+            {
+                Name = RAW_BACKGROUND_ENTRY_POINT,
+                TaskEntryPoint = RAW_BACKGROUND_ENTRY_POINT
+            };
+
+            // Set trigger for Toast History Changed
+            builder.SetTrigger(new PushNotificationTrigger());
+
+            // And register the background task
+            BackgroundTaskRegistration registration = builder.Register();
+
+            return true;
+        }
+
+        private static void UnregisterBackgroundTask(string taskName)
+        {
+            var task = BackgroundTaskRegistration.AllTasks.Values.FirstOrDefault(i => i.Name.Equals(taskName));
 
             if (task != null)
                 task.Unregister(true);
@@ -224,28 +255,6 @@ namespace TODOAdaptiveUISample.Common
 
             // the user may override to set custom content
             await OnInitializeAsync();
-
-
-            //string itemToSelect = null;
-            //if (e.Kind == ActivationKind.ToastNotification)
-            //{
-            //    var toastArgss = e as ToastNotificationActivatedEventArgs;
-            //    var arguments = toastArgss.Argument.Split(':');
-
-            //    if (arguments.Count() > 0)
-            //    {
-
-            //        switch (arguments[0])
-            //        {
-            //            case "edit":
-            //                if (arguments.Count() > 1)
-            //                {
-            //                    itemToSelect = arguments[1];
-            //                }
-            //                break;
-            //        }
-            //    }
-            //}
 
             if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
             {

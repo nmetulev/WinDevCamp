@@ -23,8 +23,8 @@ namespace Notifier
     {
         NotificationHubClient hub;
 
-        string connectionStr = "Endpoint=sb://todomva.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=uA4EApoi/woP0l/4k6ma44qNtLeqaiML4oEUpWUwfn0=";
-        string hubPath = "todomva";
+        string connectionStr = "<CONNECTION STR>";
+        string hubPath = "<HUB PATH>";
         public MainWindow()
         {
             InitializeComponent();
@@ -32,13 +32,25 @@ namespace Notifier
             this.Loaded += (s, e) => { Combo.ItemsSource = ToastItem.Defaults(); Combo.SelectedIndex = 1; };
         }
 
-        private async Task sendNotification(string xml)
+        private async Task sendNotification(string content)
         {
             if (hub == null)
                 hub = NotificationHubClient.CreateClientFromConnectionString(connectionStr, hubPath);
 
             //var toast = @"<toast launch=""MainPage.xaml?param=neworder""><visual><binding template=""ToastText01""><text id=""1"">" + msg + @"</text></binding></visual></toast>";
-            await hub.SendWindowsNativeNotificationAsync(xml);
+
+            if (rawCheck.IsChecked == true)
+            {
+                Notification notification = new WindowsNotification(content);
+                notification.Headers.Add("X-WNS-Type", "wns/raw");
+                await hub.SendNotificationAsync(notification);
+            }
+            else
+            {
+                await hub.SendWindowsNativeNotificationAsync(content);
+            }
+
+            
         }
         
 
@@ -55,7 +67,8 @@ namespace Notifier
             var item = (sender as ComboBox).SelectedItem;
             if (item != null)
             {
-                Box.Text = (item as ToastItem).xml;
+                Box.Text = (item as ToastItem).Content;
+                rawCheck.IsChecked = (item as ToastItem).Raw;
             }
         }
     }
@@ -63,7 +76,8 @@ namespace Notifier
     public class ToastItem
     {
         public string Name { get; set; }
-        public string xml { get; set; }
+        public string Content { get; set; }
+        public bool Raw { get; set; } = false;
 
         public override string ToString()
         {
@@ -76,7 +90,7 @@ namespace Notifier
 
             // http://blogs.msdn.com/b/tiles_and_toasts/archive/2015/07/02/adaptive-and-interactive-toast-notifications-for-windows-10.aspx
 
-            list.Add(new ToastItem() { Name = "TextOnly", xml = 
+            list.Add(new ToastItem() { Name = "TextOnly", Content = 
 $@"<toast launch=""MainPage.xaml?param=neworder"">
     <visual>
         <binding template=""ToastText01"">
@@ -89,7 +103,7 @@ $@"<toast launch=""MainPage.xaml?param=neworder"">
             list.Add(new ToastItem()
             {
                 Name = "Reminder",
-                xml =
+                Content =
 $@"<toast activationType='background' launch='args' scenario='reminder' arguments='hello'>
     <visual>
         <binding template='ToastGeneric'>
@@ -104,15 +118,15 @@ $@"<toast activationType='background' launch='args' scenario='reminder' argument
 
             list.Add(new ToastItem()
             {
-                Name = "Demo1",
-                xml =
+                Name = "ToDoItemDue",
+                Content =
 $@"<toast activationType='background' launch='args' scenario='reminder' arguments='fe8f5b3c-8ea4-4c23-8bc8-555b39c0f4da'>
     <visual>
         <binding template='ToastGeneric'>
             <text>Don't forget</text>
             <text>'Prepare notification demo for MVA' is due today</text>
             <text>You should do this so you don't look stupid in front of everyone</text>
-            <image src='ms-appdata:///local/468063_356951394336661_1182523391_o.jpg'/>
+            <image src='ms-appdata:///Local/andy.jpg'/>
         </binding>
     </visual>
     <actions hint-systemCommands = 'SnoozeAndDismiss' >
@@ -121,7 +135,14 @@ $@"<toast activationType='background' launch='args' scenario='reminder' argument
     </actions>
 </toast>"
             });
-            
+
+            list.Add(new ToastItem()
+            {
+                Name = "UpdateBadge",
+                Content ="new_items:3",
+                Raw = true
+            });
+
 
             return list;
 

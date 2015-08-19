@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="4620NikDev.ToDoMVA" Publisher="CN=F66EF699-F6EE-4B4F-908B-A45D598C9BA2" Version="1.1.0.0" />
+  <Identity Name="MVA.ToDO" Publisher="CN=this-is-mva" Version="1.1.0.0" />
   <mp:PhoneIdentity PhoneProductId="7F99654C-4FCB-48D7-86C4-6042F5A569A7" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ToDoMVA</DisplayName>
@@ -24,14 +24,23 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#00BCF2" />
       </uap:VisualElements>
       <Extensions>
+        
         <uap:Extension Category="windows.appService" EntryPoint="ToDoVoiceService.Service">
           <uap:AppService Name="VoiceServiceEndpoint" />
         </uap:Extension>
+        
         <Extension Category="windows.backgroundTasks" EntryPoint="NotificationTask.NotificationTask">
           <BackgroundTasks>
             <Task Type="systemEvent" />
           </BackgroundTasks>
         </Extension>
+        
+        <Extension Category="windows.backgroundTasks" EntryPoint="NotificationTask.RawNotificationTask">
+          <BackgroundTasks>
+            <Task Type="pushNotification" />
+          </BackgroundTasks>
+        </Extension>
+        
       </Extensions>
     </Application>
   </Applications>
