@@ -32,16 +32,16 @@ namespace TODOAdaptiveUISample.Views
         {
             this.InitializeComponent();
 
-            //penSize = minPenSize + penSizeIncrement * PenThickness.SelectedIndex;
+            penSize = minPenSize + penSizeIncrement * PenThickness.SelectedIndex;
 
-            //InkDrawingAttributes drawingAttributes = new InkDrawingAttributes();
-            //drawingAttributes.Color = Windows.UI.Colors.Red;
-            //drawingAttributes.Size = new Size(penSize, penSize);
-            //drawingAttributes.IgnorePressure = false;
-            //drawingAttributes.FitToCurve = true;
+            InkDrawingAttributes drawingAttributes = new InkDrawingAttributes();
+            drawingAttributes.Color = Windows.UI.Colors.Red;
+            drawingAttributes.Size = new Size(penSize, penSize);
+            drawingAttributes.IgnorePressure = false;
+            drawingAttributes.FitToCurve = true;
 
-            //inkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
-            //inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Pen;
+            inkCanvas.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
+            inkCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Pen;
         }
 
         #region SaveLoad
